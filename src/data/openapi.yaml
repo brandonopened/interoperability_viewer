@@ -1,0 +1,220 @@
+openapi: 3.1.0
+
+info:
+  title: Skills Proficiency API
+  description: API for retrieving skills proficiency data for individuals
+  version: 1.0.0
+
+paths:
+  /skills:
+    get:
+      summary: Get skills proficiency data
+      description: Retrieve skills proficiency assessments for a person identified by their identifier (e.g., email address)
+      operationId: getSkills
+      parameters:
+        - name: identifier
+          in: query
+          required: true
+          description: Person identifier (e.g., email address). Must be URL-encoded.
+          schema:
+            type: string
+            format: email
+          example: me@example.com
+      responses:
+        '200':
+          description: Successful response with skills proficiency data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillsResponse'
+              example:
+                "@context": "https://schema.hropenstandards.org/4.5/recruiting/rdf/SkillsApi.json"
+                skills:
+                  - "@type": "SkillAssertion"
+                    skill:
+                      id: "https://example.com/skills/8f12345abcd"
+                      name: "Data Analysis"
+                      description: "Ability to analyze and interpret data"
+                    proficiencyLevel:
+                      "@type": "DefinedTerm"
+                      name: "Advanced"
+                    assertionStatus: "Completed"
+                    validFrom: "2025-10-28T00:00:00Z"
+                    validUntil: "2026-10-28T00:00:00Z"
+                  - "@type": "SkillAssertion"
+                    skill:
+                      id: "https://example.com/skills/8f67890efgh"
+                      name: "Python Programming"
+                      description: "Programming skills in Python language"
+                    proficiencyLevel:
+                      "@type": "DefinedTerm"
+                      name: "Intermediate"
+                    assertionStatus: "Completed"
+                    validFrom: "2025-09-15T00:00:00Z"
+        '400':
+          description: Bad request - missing or invalid identifier format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Bad Request"
+                message: "Missing or invalid identifier parameter. Identifier must be a valid email address."
+                code: 400
+        '404':
+          description: Identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Not Found"
+                message: "No skills data found for the specified identifier."
+                code: 404
+
+components:
+  schemas:
+    SkillsResponse:
+      type: object
+      required:
+        - "@context"
+        - skills
+      properties:
+        "@context":
+          type: string
+          const: "https://schema.hropenstandards.org/4.5/recruiting/rdf/SkillsApi.json"
+          description: JSON-LD context URI
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillAssertion'
+          description: Array of skill proficiency assessments
+
+    SkillAssertion:
+      type: object
+      required:
+        - "@type"
+        - skill
+        - proficiencyLevel
+        - assertionStatus
+        - validFrom
+      properties:
+        "@type":
+          type: string
+          enum:
+            - SkillAssertion
+          description: The type of the assertion
+        skill:
+          $ref: '#/components/schemas/Skill'
+        proficiencyLevel:
+          $ref: '#/components/schemas/ProficiencyLevel'
+        assertionStatus:
+          type: string
+          enum:
+            - Completed
+            - Enrolled
+            - Failed
+            - InProgress
+            - OnHold
+            - Provisional
+            - Withdrew
+          description: Status of the skill assertion
+        validFrom:
+          type: string
+          format: date-time
+          description: ISO 8601 datetime indicating when the assertion becomes valid
+          example: "2025-10-28T00:00:00Z"
+        validUntil:
+          type: string
+          format: date-time
+          description: ISO 8601 datetime indicating when the assertion expires (optional)
+          example: "2026-10-28T00:00:00Z"
+
+    Skill:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uri
+          description: Unique identifier URI for the skill
+          example: "https://api.eightfold.ai/skills/8f12345abcd"
+        name:
+          type: string
+          description: Name of the skill
+          example: "Data Analysis"
+        description:
+          type: string
+          description: Simple description of the skill
+          example: "Ability to analyze and interpret data"
+        keywords:
+          type: array
+          description: Keywords associated with the skill
+          items:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                description: The name of the keyword
+              value:
+                type: string
+                description: The value of the keyword
+          example:
+            - name: "data"
+            - name: "analysis"
+              value: "statistical"
+        ctid:
+          type: string
+          description: Credential Transparency Description Language identifier
+          example: "ce-12345678-abcd-efgh-ijkl-123456789012"
+        codedNotation:
+          type: string
+          description: A short alphanumeric string used to identify the skill
+          example: "DA-001"
+        verifications:
+          type: array
+          description: Verifications of the skill (e.g., OpenBadgeCredential or other VerifiableCredentials)
+          items:
+            type: object
+            additionalProperties: true
+          example: []
+
+    ProficiencyLevel:
+      type: object
+      required:
+        - "@type"
+        - name
+      properties:
+        "@type":
+          type: string
+          enum:
+            - DefinedTerm
+          description: The type of the proficiency level
+        name:
+          type: string
+          description: Name of the proficiency level
+          example: "Advanced"
+
+    Error:
+      type: object
+      required:
+        - error
+        - message
+        - code
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "Bad Request"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Missing or invalid identifier parameter. Identifier must be a valid email address."
+        code:
+          type: integer
+          description: HTTP status code
+          example: 400
+
