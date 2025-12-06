@@ -1,45 +1,79 @@
 import { useState } from 'react';
-import { FileText, Code, FileJson, Network, ExternalLink, BookOpen } from 'lucide-react';
+import { FileText, Code, FileJson, Network, ExternalLink, BookOpen, ArrowLeftRight } from 'lucide-react';
 import { specifications } from './data/specifications';
 import { Specification, ViewMode } from './types/specification';
 import { SchemaViewer } from './components/SchemaViewer';
 import { ExampleViewer } from './components/ExampleViewer';
 import { DiagramViewer } from './components/DiagramViewer';
 import { TermsList } from './components/TermsList';
+import { ComparisonView } from './components/ComparisonView';
+
+type AppView = 'viewer' | 'compare';
 
 function App() {
   const [selectedSpec, setSelectedSpec] = useState<Specification>(specifications[0]);
   const [viewMode, setViewMode] = useState<ViewMode>('overview');
+  const [appView, setAppView] = useState<AppView>('viewer');
 
-  const organizationColors = {
+  const organizationColors: Record<string, string> = {
     '1EdTech': 'bg-blue-100 text-blue-700 border-blue-200',
     'Credential Engine': 'bg-green-100 text-green-700 border-green-200',
     'IEEE': 'bg-purple-100 text-purple-700 border-purple-200',
-    'HR Open': 'bg-orange-100 text-orange-700 border-orange-200'
+    'HR Open': 'bg-orange-100 text-orange-700 border-orange-200',
+    'CEDS': 'bg-cyan-100 text-cyan-700 border-cyan-200'
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <header className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center gap-3">
-            <Network className="w-8 h-8 text-blue-600" />
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900">
-                Interoperability Specification Viewer
-              </h1>
-              <p className="text-sm text-slate-600 mt-1">
-                Explore specifications from 1EdTech, Credential Engine, and IEEE
-              </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Network className="w-8 h-8 text-blue-600" />
+              <div>
+                <h1 className="text-2xl font-bold text-slate-900">
+                  Interoperability Specification Viewer
+                </h1>
+                <p className="text-sm text-slate-600 mt-1">
+                  Explore and compare specifications from 1EdTech, Credential Engine, HR Open, and CEDS
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setAppView('viewer')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                  appView === 'viewer'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                <BookOpen className="w-4 h-4" />
+                Viewer
+              </button>
+              <button
+                onClick={() => setAppView('compare')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                  appView === 'compare'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                <ArrowLeftRight className="w-4 h-4" />
+                Compare
+              </button>
             </div>
           </div>
         </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-12 gap-6">
-          <aside className="col-span-12 lg:col-span-3">
-            <div className="bg-white rounded-lg border border-slate-200 p-4 sticky top-6">
+        {appView === 'compare' ? (
+          <ComparisonView specifications={specifications} />
+        ) : (
+          <div className="grid grid-cols-12 gap-6">
+            <aside className="col-span-12 lg:col-span-3">
+              <div className="bg-white rounded-lg border border-slate-200 p-4 sticky top-6">
               <h2 className="text-sm font-semibold text-slate-900 mb-3 uppercase tracking-wide">
                 Specifications
               </h2>
@@ -190,7 +224,8 @@ function App() {
               </div>
             </div>
           </main>
-        </div>
+          </div>
+        )}
       </div>
 
       <footer className="bg-white border-t border-slate-200 mt-12">
