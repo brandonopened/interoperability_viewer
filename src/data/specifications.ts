@@ -1781,5 +1781,494 @@ export const specifications: Specification[] = [
         type: 'Concept'
       }
     ]
+  },
+  {
+    id: 'ceds-12.1',
+    name: 'CEDS 12.1',
+    fullName: 'Common Education Data Standards v12.1',
+    version: '12.1.0.0',
+    organization: 'CEDS',
+    description: 'A comprehensive P-20W (early learning through workforce) education data standard spanning 12 domains with over 1,710 elements and 70+ entities. Expressed in Web Ontology Language (OWL) and supports JSON, JSON-LD, XML, and RDF formats. Enables interoperability across early learning, K-12, postsecondary, and workforce systems.',
+    specUrl: 'https://ceds.ed.gov/datamodel.aspx',
+    schema: {
+      type: 'openapi',
+      content: {
+        openapi: '3.0.0',
+        info: {
+          title: 'CEDS Common Education Data Standards',
+          version: '12.1.0.0',
+          description: 'P-20W education data standard covering early learning through workforce'
+        },
+        components: {
+          schemas: {
+            Person: {
+              type: 'object',
+              description: 'Base entity representing individuals across the education continuum',
+              properties: {
+                personId: {
+                  type: 'string',
+                  format: 'uuid',
+                  description: 'Unique identifier for the person'
+                },
+                firstName: { type: 'string' },
+                middleName: { type: 'string' },
+                lastName: { type: 'string' },
+                birthDate: { type: 'string', format: 'date' },
+                sexAtBirth: {
+                  type: 'string',
+                  enum: ['Male', 'Female', 'NotSelected']
+                },
+                hispanicLatinoEthnicity: { type: 'boolean' },
+                races: {
+                  type: 'array',
+                  items: {
+                    type: 'string',
+                    enum: ['AmericanIndianOrAlaskaNative', 'Asian', 'BlackOrAfricanAmerican', 'NativeHawaiianOrOtherPacificIslander', 'White']
+                  }
+                }
+              }
+            },
+            K12Student: {
+              type: 'object',
+              description: 'Student in elementary or secondary education (K-12)',
+              properties: {
+                personId: { type: 'string', format: 'uuid' },
+                stateStudentIdentifier: { type: 'string' },
+                localStudentIdentifier: { type: 'string' },
+                gradeLevel: {
+                  type: 'string',
+                  enum: ['KG', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+                },
+                enrollmentStatus: {
+                  type: 'string',
+                  enum: ['Enrolled', 'NotEnrolled', 'Withdrawn']
+                },
+                entryDate: { type: 'string', format: 'date' },
+                exitDate: { type: 'string', format: 'date' },
+                specialEducationServicesStatus: { type: 'boolean' },
+                englishLearnerStatus: { type: 'boolean' },
+                economicDisadvantageStatus: { type: 'boolean' }
+              }
+            },
+            PostsecondaryStudent: {
+              type: 'object',
+              description: 'Student in postsecondary education',
+              properties: {
+                personId: { type: 'string', format: 'uuid' },
+                studentIdentifier: { type: 'string' },
+                admissionDate: { type: 'string', format: 'date' },
+                enrollmentStatus: {
+                  type: 'string',
+                  enum: ['FirstTime', 'Reentry', 'Continuing', 'Transfer']
+                },
+                attendanceLevel: {
+                  type: 'string',
+                  enum: ['FullTime', 'PartTime', 'LessThanPartTime']
+                },
+                creditHoursAttempted: { type: 'number' },
+                creditHoursEarned: { type: 'number' },
+                gradePointAverage: { type: 'number', minimum: 0, maximum: 4 },
+                expectedGraduationDate: { type: 'string', format: 'date' }
+              }
+            },
+            EarlyLearningChild: {
+              type: 'object',
+              description: 'Child in early learning programs',
+              properties: {
+                personId: { type: 'string', format: 'uuid' },
+                programEntryDate: { type: 'string', format: 'date' },
+                programExitDate: { type: 'string', format: 'date' },
+                ageAtEntry: { type: 'number', description: 'Age in months' },
+                programType: {
+                  type: 'string',
+                  enum: ['HeadStart', 'PreK', 'Childcare', 'HomeVisitation']
+                },
+                specialNeedsStatus: { type: 'boolean' }
+              }
+            },
+            Organization: {
+              type: 'object',
+              description: 'Educational institution or organization',
+              properties: {
+                organizationId: { type: 'string', format: 'uuid' },
+                name: { type: 'string', description: 'Official name of the organization' },
+                organizationType: {
+                  type: 'string',
+                  enum: ['K12School', 'LEA', 'SEA', 'PostsecondaryInstitution', 'EarlyLearningProgram', 'EmployerOrganization']
+                },
+                identifiers: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      identifierType: {
+                        type: 'string',
+                        enum: ['NCES', 'OPEID', 'DUNS', 'EIN', 'State']
+                      },
+                      identifier: { type: 'string' }
+                    }
+                  }
+                },
+                address: {
+                  type: 'object',
+                  properties: {
+                    streetAddress: { type: 'string' },
+                    city: { type: 'string' },
+                    stateAbbreviation: { type: 'string', pattern: '^[A-Z]{2}$' },
+                    postalCode: { type: 'string' },
+                    county: { type: 'string' }
+                  }
+                }
+              }
+            },
+            Course: {
+              type: 'object',
+              description: 'Educational course or learning program',
+              properties: {
+                courseId: { type: 'string', format: 'uuid' },
+                courseCode: { type: 'string' },
+                courseName: { type: 'string' },
+                courseDescription: { type: 'string' },
+                creditValue: { type: 'number' },
+                subjectArea: {
+                  type: 'string',
+                  enum: ['English', 'Mathematics', 'Science', 'SocialStudies', 'Arts', 'PhysicalEducation', 'CTE', 'Other']
+                },
+                courseLevelType: {
+                  type: 'string',
+                  enum: ['Basic', 'General', 'Honors', 'AP', 'IB', 'DualCredit']
+                }
+              }
+            },
+            Assessment: {
+              type: 'object',
+              description: 'Educational assessment or examination',
+              properties: {
+                assessmentId: { type: 'string', format: 'uuid' },
+                assessmentIdentifier: { type: 'string' },
+                assessmentTitle: { type: 'string' },
+                assessmentType: {
+                  type: 'string',
+                  enum: ['Achievement', 'Aptitude', 'AttainmentAssessment', 'Formative', 'Summative', 'Interim', 'Diagnostic']
+                },
+                academicSubject: { type: 'string' },
+                gradeLevel: { type: 'string' },
+                assessmentPurpose: {
+                  type: 'string',
+                  enum: ['Accountability', 'AdmissionsAndPlacement', 'Diagnostic', 'ProgressMonitoring']
+                }
+              }
+            },
+            AssessmentResult: {
+              type: 'object',
+              description: 'Individual assessment results',
+              properties: {
+                personId: { type: 'string', format: 'uuid' },
+                assessmentId: { type: 'string', format: 'uuid' },
+                assessmentAdministrationDate: { type: 'string', format: 'date' },
+                scoreValue: { type: 'string' },
+                scoreMetricType: {
+                  type: 'string',
+                  enum: ['ScaleScore', 'PercentileScore', 'RawScore', 'PerformanceLevel']
+                },
+                performanceLevel: { type: 'string', description: 'e.g., Proficient, Advanced, Basic' }
+              }
+            },
+            Credential: {
+              type: 'object',
+              description: 'Educational credential, certificate, or degree',
+              properties: {
+                credentialId: { type: 'string', format: 'uuid' },
+                credentialName: { type: 'string' },
+                credentialType: {
+                  type: 'string',
+                  enum: ['Diploma', 'Certificate', 'Degree', 'License', 'Badge', 'Certification']
+                },
+                credentialLevel: {
+                  type: 'string',
+                  enum: ['HighSchool', 'AssociateDegree', 'BachelorsDegree', 'MastersDegree', 'DoctoralDegree', 'ProfessionalCertificate']
+                },
+                issuerOrganizationId: { type: 'string', format: 'uuid' },
+                awardDate: { type: 'string', format: 'date' },
+                expirationDate: { type: 'string', format: 'date' }
+              }
+            },
+            CompetencyFramework: {
+              type: 'object',
+              description: 'Framework defining competencies and learning standards',
+              properties: {
+                frameworkId: { type: 'string', format: 'uuid' },
+                frameworkName: { type: 'string' },
+                frameworkDescription: { type: 'string' },
+                publisher: { type: 'string' },
+                version: { type: 'string' },
+                subjectArea: { type: 'string' },
+                educationLevel: {
+                  type: 'array',
+                  items: { type: 'string' }
+                }
+              }
+            },
+            LearningResource: {
+              type: 'object',
+              description: 'Educational materials and resources',
+              properties: {
+                learningResourceId: { type: 'string', format: 'uuid' },
+                title: { type: 'string' },
+                description: { type: 'string' },
+                resourceType: {
+                  type: 'string',
+                  enum: ['Textbook', 'Video', 'Audio', 'InteractiveMedia', 'Assessment', 'Lesson', 'Unit']
+                },
+                learningResourceFormat: {
+                  type: 'string',
+                  enum: ['Digital', 'Physical', 'Hybrid']
+                },
+                url: { type: 'string', format: 'uri' },
+                publisherName: { type: 'string' }
+              }
+            },
+            Enrollment: {
+              type: 'object',
+              description: 'Relationship between person and organization',
+              properties: {
+                enrollmentId: { type: 'string', format: 'uuid' },
+                personId: { type: 'string', format: 'uuid' },
+                organizationId: { type: 'string', format: 'uuid' },
+                entryDate: { type: 'string', format: 'date' },
+                exitDate: { type: 'string', format: 'date' },
+                entryType: { type: 'string' },
+                exitType: { type: 'string' }
+              }
+            },
+            StaffEmployment: {
+              type: 'object',
+              description: 'Staff employment relationship with educational organization',
+              properties: {
+                personId: { type: 'string', format: 'uuid' },
+                organizationId: { type: 'string', format: 'uuid' },
+                positionTitle: { type: 'string' },
+                employmentStatus: {
+                  type: 'string',
+                  enum: ['Active', 'Inactive', 'Leave']
+                },
+                hireDate: { type: 'string', format: 'date' },
+                terminationDate: { type: 'string', format: 'date' },
+                classificationOfInstructionalProgram: { type: 'string' },
+                fullTimeEquivalency: { type: 'number', minimum: 0, maximum: 1 }
+              }
+            }
+          }
+        }
+      }
+    },
+    example: `{
+  "person": {
+    "personId": "550e8400-e29b-41d4-a716-446655440000",
+    "firstName": "Jane",
+    "middleName": "Marie",
+    "lastName": "Smith",
+    "birthDate": "2010-08-15",
+    "sexAtBirth": "Female",
+    "hispanicLatinoEthnicity": false,
+    "races": ["White", "Asian"]
+  },
+  "k12Student": {
+    "personId": "550e8400-e29b-41d4-a716-446655440000",
+    "stateStudentIdentifier": "TX-12345678",
+    "localStudentIdentifier": "DIST001-STU-2024-001",
+    "gradeLevel": "09",
+    "enrollmentStatus": "Enrolled",
+    "entryDate": "2024-08-20",
+    "specialEducationServicesStatus": false,
+    "englishLearnerStatus": false,
+    "economicDisadvantageStatus": false
+  },
+  "enrollment": {
+    "enrollmentId": "660e8400-e29b-41d4-a716-446655440001",
+    "personId": "550e8400-e29b-41d4-a716-446655440000",
+    "organizationId": "770e8400-e29b-41d4-a716-446655440002",
+    "entryDate": "2024-08-20",
+    "entryType": "Transfer"
+  },
+  "organization": {
+    "organizationId": "770e8400-e29b-41d4-a716-446655440002",
+    "name": "Lincoln High School",
+    "organizationType": "K12School",
+    "identifiers": [
+      {
+        "identifierType": "NCES",
+        "identifier": "480123456789"
+      },
+      {
+        "identifierType": "State",
+        "identifier": "TX-DIST001-HS01"
+      }
+    ],
+    "address": {
+      "streetAddress": "123 Education Way",
+      "city": "Austin",
+      "stateAbbreviation": "TX",
+      "postalCode": "78701",
+      "county": "Travis"
+    }
+  },
+  "assessmentResult": {
+    "personId": "550e8400-e29b-41d4-a716-446655440000",
+    "assessmentId": "880e8400-e29b-41d4-a716-446655440003",
+    "assessmentAdministrationDate": "2024-04-15",
+    "scoreValue": "1250",
+    "scoreMetricType": "ScaleScore",
+    "performanceLevel": "Proficient"
+  }
+}`,
+    diagram: `graph TB
+    Person[Person]
+    ELChild[Early Learning Child]
+    K12Student[K-12 Student]
+    PSStudent[Postsecondary Student]
+    Staff[Staff Member]
+
+    Organization[Organization]
+    K12School[K-12 School]
+    LEA[Local Education Agency]
+    PSInst[Postsecondary Institution]
+    ELProgram[Early Learning Program]
+
+    Course[Course]
+    Assessment[Assessment]
+    AssessmentResult[Assessment Result]
+    Credential[Credential]
+    CompFramework[Competency Framework]
+    LearningRes[Learning Resource]
+
+    Enrollment[Enrollment]
+    Employment[Staff Employment]
+
+    Person -->|child type| ELChild
+    Person -->|student type| K12Student
+    Person -->|student type| PSStudent
+    Person -->|staff type| Staff
+
+    Person -->|enrolled via| Enrollment
+    Enrollment -->|at| Organization
+
+    Staff -->|employed via| Employment
+    Employment -->|at| Organization
+
+    Organization -->|can be| K12School
+    Organization -->|can be| LEA
+    Organization -->|can be| PSInst
+    Organization -->|can be| ELProgram
+
+    K12Student -->|takes| Course
+    PSStudent -->|takes| Course
+
+    Person -->|completes| Assessment
+    Assessment -->|produces| AssessmentResult
+    AssessmentResult -->|earned by| Person
+
+    Person -->|earns| Credential
+    Credential -->|issued by| Organization
+
+    Course -->|aligned to| CompFramework
+    Course -->|uses| LearningRes
+    Assessment -->|aligned to| CompFramework
+
+    style Person fill:#3b82f6,stroke:#1e40af,color:#fff
+    style Organization fill:#10b981,stroke:#059669,color:#fff
+    style Assessment fill:#f59e0b,stroke:#d97706,color:#fff
+    style Credential fill:#8b5cf6,stroke:#6d28d9,color:#fff
+    style Course fill:#ec4899,stroke:#be185d,color:#fff
+    style CompFramework fill:#06b6d4,stroke:#0891b2,color:#fff`,
+    terms: [
+      {
+        name: 'Person',
+        description: 'Base entity representing individuals across the education continuum from early learning through workforce',
+        type: 'Person',
+        relationships: ['personId', 'demographics', 'enrollments', 'assessments', 'credentials']
+      },
+      {
+        name: 'K-12 Student',
+        description: 'Student enrolled in elementary or secondary education (kindergarten through grade 12)',
+        type: 'K12Student',
+        relationships: ['personId', 'gradeLevel', 'enrollmentStatus', 'specialEducationStatus', 'englishLearnerStatus']
+      },
+      {
+        name: 'Postsecondary Student',
+        description: 'Student enrolled in education beyond high school including colleges, universities, and vocational programs',
+        type: 'PostsecondaryStudent',
+        relationships: ['personId', 'enrollmentStatus', 'attendanceLevel', 'creditHours', 'GPA']
+      },
+      {
+        name: 'Early Learning Child',
+        description: 'Child participating in early learning programs such as Head Start, Pre-K, or childcare',
+        type: 'EarlyLearningChild',
+        relationships: ['personId', 'programType', 'entryDate', 'ageAtEntry', 'specialNeedsStatus']
+      },
+      {
+        name: 'Organization',
+        description: 'Educational institutions including K-12 schools, LEAs, SEAs, postsecondary institutions, and early learning programs',
+        type: 'Organization',
+        relationships: ['organizationId', 'organizationType', 'identifiers', 'address']
+      },
+      {
+        name: 'Enrollment',
+        description: 'Relationship between a person and an educational organization with entry and exit dates',
+        type: 'Enrollment',
+        relationships: ['personId', 'organizationId', 'entryDate', 'exitDate', 'entryType', 'exitType']
+      },
+      {
+        name: 'Course',
+        description: 'Educational course or learning program with subject area, level, and credit information',
+        type: 'Course',
+        relationships: ['courseCode', 'subjectArea', 'courseLevelType', 'creditValue']
+      },
+      {
+        name: 'Assessment',
+        description: 'Educational test or examination measuring student knowledge and skills',
+        type: 'Assessment',
+        relationships: ['assessmentType', 'academicSubject', 'gradeLevel', 'assessmentPurpose']
+      },
+      {
+        name: 'Assessment Result',
+        description: 'Individual student performance on an assessment with scores and performance levels',
+        type: 'AssessmentResult',
+        relationships: ['personId', 'assessmentId', 'scoreValue', 'scoreMetricType', 'performanceLevel']
+      },
+      {
+        name: 'Credential',
+        description: 'Educational credentials including diplomas, degrees, certificates, licenses, and badges',
+        type: 'Credential',
+        relationships: ['credentialType', 'credentialLevel', 'issuerOrganizationId', 'awardDate']
+      },
+      {
+        name: 'Competency Framework',
+        description: 'Structured framework defining learning standards and competencies',
+        type: 'CompetencyFramework',
+        relationships: ['frameworkName', 'publisher', 'subjectArea', 'educationLevel']
+      },
+      {
+        name: 'Learning Resource',
+        description: 'Educational materials including textbooks, videos, interactive media, and lessons',
+        type: 'LearningResource',
+        relationships: ['resourceType', 'learningResourceFormat', 'url', 'publisherName']
+      },
+      {
+        name: 'P-20W Continuum',
+        description: 'Comprehensive education pathway from early learning (P) through postsecondary (20) to workforce (W)',
+        type: 'Concept'
+      },
+      {
+        name: 'Domain Entity Schema',
+        description: 'User-friendly hierarchical structure organizing CEDS properties by domain and entity type',
+        type: 'Concept'
+      },
+      {
+        name: 'CEDS Domains',
+        description: 'Twelve primary domains: Early Learning, K-12, Postsecondary, Career & Technical, Adult Education, Workforce, Assessments, Credentials, Competencies, Learning Resources, Facilities, Authentication/Authorization',
+        type: 'Enumeration'
+      }
+    ]
   }
 ];
