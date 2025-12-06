@@ -2270,5 +2270,376 @@ export const specifications: Specification[] = [
         type: 'Enumeration'
       }
     ]
+  },
+  {
+    id: 'jedx-organizations-1.0',
+    name: 'JEDX Organizations 1.0',
+    fullName: 'HR Open Standards Organizations API',
+    version: '1.0',
+    organization: 'HR Open',
+    description: 'The Jobs Exchange (JEDX) Organizations API provides a standardized structure for exchanging organizational data in HR and recruiting systems. Supports hierarchical organization structures, locations, departments, and metadata for integration across applicant tracking systems, HCM platforms, and job boards.',
+    specUrl: 'https://github.com/HROpen/APISpecifications',
+    schema: {
+      type: 'openapi',
+      content: {
+        openapi: '3.0.0',
+        info: {
+          title: 'JEDX Organizations API',
+          version: '1.0',
+          description: 'API for exchanging organizational structure and metadata'
+        },
+        components: {
+          schemas: {
+            Organization: {
+              type: 'object',
+              description: 'Represents an organization or company entity with hierarchical relationships',
+              required: ['organizationId', 'name'],
+              properties: {
+                organizationId: {
+                  type: 'string',
+                  format: 'uri',
+                  description: 'Unique identifier for the organization'
+                },
+                name: {
+                  type: 'string',
+                  description: 'Legal or common name of the organization'
+                },
+                tradeName: {
+                  type: 'string',
+                  description: 'Trading or doing-business-as (DBA) name'
+                },
+                code: {
+                  type: 'string',
+                  description: 'Organization code used in internal systems'
+                },
+                taxId: {
+                  type: 'string',
+                  description: 'Tax identification number (EIN, VAT, etc.)'
+                },
+                industryCode: {
+                  type: 'object',
+                  description: 'Industry classification code (NAICS, SIC, etc.)',
+                  properties: {
+                    codeValue: { type: 'string' },
+                    scheme: { type: 'string', description: 'Classification scheme (NAICS, SIC)' }
+                  }
+                },
+                organizationType: {
+                  type: 'string',
+                  enum: ['Company', 'Division', 'Department', 'Branch', 'Subsidiary'],
+                  description: 'Type of organizational entity'
+                },
+                parentOrganizationId: {
+                  type: 'string',
+                  format: 'uri',
+                  description: 'Reference to parent organization for hierarchical structures'
+                },
+                locations: {
+                  type: 'array',
+                  items: { $ref: '#/components/schemas/OrganizationLocation' },
+                  description: 'Physical locations associated with the organization'
+                },
+                contacts: {
+                  type: 'array',
+                  items: { $ref: '#/components/schemas/Contact' },
+                  description: 'Contact information for the organization'
+                },
+                domainName: {
+                  type: 'string',
+                  description: 'Primary internet domain name'
+                },
+                description: {
+                  type: 'string',
+                  description: 'Description of the organization'
+                },
+                numberOfEmployees: {
+                  type: 'object',
+                  description: 'Employee count ranges',
+                  properties: {
+                    value: { type: 'integer' },
+                    rangeStart: { type: 'integer' },
+                    rangeEnd: { type: 'integer' }
+                  }
+                }
+              }
+            },
+            OrganizationLocation: {
+              type: 'object',
+              description: 'Physical location of an organization',
+              properties: {
+                locationId: {
+                  type: 'string',
+                  description: 'Unique identifier for the location'
+                },
+                name: {
+                  type: 'string',
+                  description: 'Name of the location (e.g., "Headquarters", "West Coast Office")'
+                },
+                type: {
+                  type: 'string',
+                  enum: ['Headquarters', 'Branch', 'Remote', 'Warehouse', 'Retail'],
+                  description: 'Type of location'
+                },
+                address: {
+                  type: 'object',
+                  description: 'Physical address',
+                  properties: {
+                    line1: { type: 'string' },
+                    line2: { type: 'string' },
+                    city: { type: 'string' },
+                    state: { type: 'string' },
+                    postalCode: { type: 'string' },
+                    countryCode: { type: 'string', description: 'ISO 3166-1 alpha-2 country code' }
+                  }
+                },
+                geoCoordinates: {
+                  type: 'object',
+                  description: 'Geographic coordinates',
+                  properties: {
+                    latitude: { type: 'number', format: 'double' },
+                    longitude: { type: 'number', format: 'double' }
+                  }
+                },
+                isPrimary: {
+                  type: 'boolean',
+                  description: 'Whether this is the primary location'
+                }
+              }
+            },
+            Department: {
+              type: 'object',
+              description: 'Organizational department or unit',
+              properties: {
+                departmentId: {
+                  type: 'string',
+                  description: 'Unique identifier for the department'
+                },
+                name: {
+                  type: 'string',
+                  description: 'Name of the department'
+                },
+                code: {
+                  type: 'string',
+                  description: 'Department code'
+                },
+                parentDepartmentId: {
+                  type: 'string',
+                  description: 'Parent department for hierarchical structures'
+                },
+                organizationId: {
+                  type: 'string',
+                  format: 'uri',
+                  description: 'Organization this department belongs to'
+                },
+                headOfDepartment: {
+                  type: 'object',
+                  description: 'Manager or head of department',
+                  properties: {
+                    personId: { type: 'string' },
+                    name: { type: 'string' },
+                    title: { type: 'string' }
+                  }
+                },
+                function: {
+                  type: 'string',
+                  description: 'Primary function of the department',
+                  enum: ['Operations', 'Sales', 'Marketing', 'HR', 'Finance', 'IT', 'R&D', 'Legal', 'Customer Service']
+                }
+              }
+            },
+            Contact: {
+              type: 'object',
+              description: 'Contact information',
+              properties: {
+                type: {
+                  type: 'string',
+                  enum: ['Phone', 'Email', 'Website', 'Fax', 'Social Media'],
+                  description: 'Type of contact method'
+                },
+                value: {
+                  type: 'string',
+                  description: 'Contact value (phone number, email address, URL)'
+                },
+                use: {
+                  type: 'string',
+                  enum: ['Business', 'Personal', 'Support', 'Sales'],
+                  description: 'Purpose of the contact method'
+                }
+              }
+            },
+            OrganizationHierarchy: {
+              type: 'object',
+              description: 'Represents hierarchical relationships between organizations',
+              properties: {
+                rootOrganizationId: {
+                  type: 'string',
+                  format: 'uri',
+                  description: 'Top-level organization in the hierarchy'
+                },
+                relationships: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      parentId: { type: 'string', format: 'uri' },
+                      childId: { type: 'string', format: 'uri' },
+                      relationshipType: {
+                        type: 'string',
+                        enum: ['Parent', 'Subsidiary', 'Affiliate', 'Partner']
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    example: `{
+  "organizationId": "https://example.com/orgs/acme-corp",
+  "name": "Acme Corporation",
+  "tradeName": "Acme",
+  "code": "ACME-001",
+  "taxId": "12-3456789",
+  "industryCode": {
+    "codeValue": "541511",
+    "scheme": "NAICS",
+    "description": "Custom Computer Programming Services"
+  },
+  "organizationType": "Company",
+  "locations": [
+    {
+      "locationId": "loc-hq-001",
+      "name": "Corporate Headquarters",
+      "type": "Headquarters",
+      "address": {
+        "line1": "123 Business Park Drive",
+        "city": "San Francisco",
+        "state": "CA",
+        "postalCode": "94102",
+        "countryCode": "US"
+      },
+      "geoCoordinates": {
+        "latitude": 37.7749,
+        "longitude": -122.4194
+      },
+      "isPrimary": true
+    },
+    {
+      "locationId": "loc-west-001",
+      "name": "Seattle Office",
+      "type": "Branch",
+      "address": {
+        "line1": "456 Tech Avenue",
+        "city": "Seattle",
+        "state": "WA",
+        "postalCode": "98101",
+        "countryCode": "US"
+      },
+      "isPrimary": false
+    }
+  ],
+  "contacts": [
+    {
+      "type": "Phone",
+      "value": "+1-415-555-0100",
+      "use": "Business"
+    },
+    {
+      "type": "Email",
+      "value": "info@acmecorp.com",
+      "use": "Business"
+    },
+    {
+      "type": "Website",
+      "value": "https://www.acmecorp.com",
+      "use": "Business"
+    }
+  ],
+  "domainName": "acmecorp.com",
+  "description": "Leading provider of innovative software solutions and technology consulting services",
+  "numberOfEmployees": {
+    "value": 5000,
+    "rangeStart": 1000,
+    "rangeEnd": 10000
+  }
+}`,
+    diagram: `graph TB
+    Org[Organization]
+    Parent[Parent Organization]
+    Locations[Locations]
+    HQ[Headquarters]
+    Branch[Branch Offices]
+    Dept[Departments]
+    Contact[Contact Info]
+    Hierarchy[Org Hierarchy]
+    Industry[Industry Classification]
+
+    Org -->|parent of| Parent
+    Org -->|has| Locations
+    Locations -->|includes| HQ
+    Locations -->|includes| Branch
+    Org -->|contains| Dept
+    Dept -->|nested in| Dept
+    Org -->|reachable via| Contact
+    Org -->|part of| Hierarchy
+    Org -->|classified by| Industry
+
+    Dept -->|located at| Branch
+    Dept -->|reports to| Parent
+
+    style Org fill:#3b82f6,stroke:#1e40af,color:#fff
+    style Locations fill:#10b981,stroke:#059669,color:#fff
+    style Dept fill:#f59e0b,stroke:#d97706,color:#fff
+    style Hierarchy fill:#8b5cf6,stroke:#6d28d9,color:#fff`,
+    terms: [
+      {
+        name: 'Organization',
+        description: 'Core entity representing a company, institution, or business entity with identification, classification, and contact information',
+        type: 'Organization',
+        relationships: ['organizationId', 'locations', 'departments', 'parentOrganization', 'contacts']
+      },
+      {
+        name: 'Organization Hierarchy',
+        description: 'Parent-child relationships between organizations defining corporate structure including subsidiaries, divisions, and affiliates',
+        type: 'Hierarchy',
+        relationships: ['parentOrganizationId', 'childOrganizations']
+      },
+      {
+        name: 'Location',
+        description: 'Physical location of an organization including headquarters, branches, warehouses, and remote offices',
+        type: 'OrganizationLocation',
+        relationships: ['address', 'geoCoordinates', 'isPrimary']
+      },
+      {
+        name: 'Department',
+        description: 'Functional unit within an organization with specific responsibilities and hierarchical structure',
+        type: 'Department',
+        relationships: ['departmentId', 'parentDepartmentId', 'organizationId', 'function']
+      },
+      {
+        name: 'Industry Code',
+        description: 'Standard industry classification using NAICS, SIC, or other taxonomy schemes for categorizing business types',
+        type: 'Classification',
+        relationships: ['codeValue', 'scheme']
+      },
+      {
+        name: 'Contact',
+        description: 'Communication methods including phone, email, website, and social media for reaching the organization',
+        type: 'Contact',
+        relationships: ['type', 'value', 'use']
+      },
+      {
+        name: 'Organization Type',
+        description: 'Classification of the organizational entity as Company, Division, Department, Branch, or Subsidiary',
+        type: 'Enumeration'
+      },
+      {
+        name: 'JEDX (Jobs Exchange)',
+        description: 'HR Open Standards initiative for data exchange between recruiting, ATS, and HCM systems',
+        type: 'Concept'
+      }
+    ]
   }
 ];

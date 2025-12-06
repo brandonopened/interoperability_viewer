@@ -5,7 +5,7 @@ An interactive web application for exploring and comparing educational and crede
 ## Features
 
 ### Specification Viewer
-- Browse 8 major specifications across 4 organizations
+- Browse 9 major specifications across 4 organizations
 - View detailed schemas, examples, diagrams, and terminology
 - Explore entity relationships and data structures
 - Access official specification documentation
@@ -27,9 +27,10 @@ An interactive web application for exploring and comparing educational and crede
 ### Credential Engine (1 specification)
 - CTDL (Credential Transparency Description Language)
 
-### HR Open (2 specifications)
+### HR Open (3 specifications)
 - LER-RS 2.0 (Learning & Employment Record Reference Specification)
 - Skills API 1.0
+- JEDX Organizations 1.0 (Jobs Exchange Organizations API)
 
 ### CEDS (1 specification)
 - CEDS 12.1 (Common Education Data Standards)
