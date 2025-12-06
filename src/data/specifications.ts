@@ -2641,5 +2641,262 @@ export const specifications: Specification[] = [
         type: 'Concept'
       }
     ]
+  },
+  {
+    id: 'ler-rs',
+    name: 'LER-RS',
+    fullName: 'Learning and Employment Record Resume Standard',
+    version: '2.0',
+    organization: 'HR Open',
+    description: 'The Learning and Employment Record Resume Standard (LER-RS) is a free and open standard designed to modernize the traditional resume format, making it machine-readable and verifiable. It enables the exchange of resume data between different systems and supports digital credentials.',
+    specUrl: 'https://hropenstandards.org/ler-rs/',
+    schema: {
+      type: 'json-schema',
+      content: {
+        $schema: 'http://json-schema.org/draft-04/schema#',
+        title: 'LER-RSType',
+        description: 'Learning and Employment Record Resume Standard',
+        type: 'object',
+        properties: {
+          type: {
+            description: 'The instance type to assist implementors of this standard to discover the schema and version of the instance.',
+            enum: ['http://schema.hropenstandards.org/4.4/recruiting/json/ler-rs/LER-RSType.json']
+          },
+          person: {
+            description: 'Information to identify the person, including name, communication, demographic details and other identifiers.',
+            $ref: '#/definitions/ResumePersonBaseType'
+          },
+          narratives: {
+            description: 'Experiences, Aspirations, Interests (or any free form text elements) of a person.',
+            type: 'array',
+            items: { $ref: '#/definitions/NarrativeType' }
+          },
+          employmentHistories: {
+            description: 'The prior and current details of a person\'s employment.',
+            type: 'array',
+            items: { $ref: '#/definitions/EmploymentHistoryType' }
+          },
+          educationAndLearnings: {
+            description: 'Contains details documenting a person\'s education and learnings.',
+            type: 'array',
+            items: { $ref: '#/definitions/EducationAndLearningType' }
+          },
+          skills: {
+            description: 'Skills are proficiencies and abilities developed through training and experience.',
+            type: 'array',
+            items: { $ref: '#/definitions/SkillType' }
+          },
+          licenses: {
+            description: 'Authoritative permission to hold a certain status or to do certain things.',
+            type: 'array',
+            items: { $ref: '#/definitions/LicenseType' }
+          },
+          certifications: {
+            description: 'Documents or confirmations certifying the status or acquirements of the bearer.',
+            type: 'array',
+            items: { $ref: '#/definitions/CertificationType' }
+          }
+        },
+        definitions: {
+          ResumePersonBaseType: {
+            type: 'object',
+            properties: {
+              name: {
+                description: 'Data comprising a person\'s name.',
+                type: 'object',
+                properties: {
+                  formattedName: { type: 'string' },
+                  given: { type: 'string' },
+                  family: { type: 'string' }
+                }
+              },
+              communication: {
+                description: 'Communication channels (email, phone, etc.)',
+                type: 'object',
+                properties: {
+                  email: { type: 'array', items: { type: 'object', properties: { address: { type: 'string' } } } },
+                  phone: { type: 'array', items: { type: 'object', properties: { formattedNumber: { type: 'string' } } } }
+                }
+              }
+            }
+          },
+          NarrativeType: {
+            type: 'object',
+            properties: {
+              name: { type: 'string', description: 'The name for the narrative.' },
+              texts: { type: 'array', items: { type: 'string' }, description: 'Named text of the narrative.' }
+            }
+          },
+          EmploymentHistoryType: {
+            type: 'object',
+            properties: {
+              organization: { type: 'object', properties: { name: { type: 'string' } } },
+              positionHistory: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    title: { type: 'string' },
+                    start: { type: 'string', format: 'date' },
+                    end: { type: 'string', format: 'date' },
+                    description: { type: 'string' }
+                  }
+                }
+              }
+            }
+          },
+          EducationAndLearningType: {
+            type: 'object',
+            properties: {
+              institution: { type: 'object', properties: { name: { type: 'string' } } },
+              degree: { type: 'object', properties: { name: { type: 'string' } } },
+              start: { type: 'string', format: 'date' },
+              end: { type: 'string', format: 'date' }
+            }
+          },
+          SkillType: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              yearsOfExperience: { type: 'integer' },
+              interestLevel: { type: 'number' }
+            }
+          },
+          LicenseType: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              issuingAuthority: { type: 'object', properties: { name: { type: 'string' } } }
+            }
+          },
+          CertificationType: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              issuingAuthority: { type: 'object', properties: { name: { type: 'string' } } }
+            }
+          }
+        }
+      }
+    },
+    example: `{
+  "type": "http://schema.hropenstandards.org/4.4/recruiting/json/ler-rs/LER-RSType.json",
+  "person": {
+    "name": {
+      "formattedName": "Jane Doe",
+      "given": "Jane",
+      "family": "Doe"
+    },
+    "communication": {
+      "email": [
+        {
+          "address": "jane.doe@example.com"
+        }
+      ],
+      "phone": [
+        {
+          "formattedNumber": "+1-555-0102"
+        }
+      ],
+      "address": [
+        {
+          "line": ["123 Innovation Drive"],
+          "city": "Tech City",
+          "countryCode": "US"
+        }
+      ]
+    }
+  },
+  "narratives": [
+    {
+      "name": "Professional Summary",
+      "texts": [
+        "Experienced software engineer with a passion for interoperability standards and open source development."
+      ]
+    }
+  ],
+  "employmentHistories": [
+    {
+      "organization": {
+        "name": "Tech Solutions Inc."
+      },
+      "positionHistory": [
+        {
+          "title": "Senior Developer",
+          "start": "2020-01-01",
+          "current": true,
+          "description": "Leading the frontend team in building responsive web applications."
+        }
+      ]
+    }
+  ],
+  "educationAndLearnings": [
+    {
+      "institution": {
+        "name": "State University"
+      },
+      "degree": {
+        "name": "Bachelor of Science in Computer Science"
+      },
+      "end": "2019-05-15"
+    }
+  ],
+  "skills": [
+    {
+      "name": "TypeScript",
+      "yearsOfExperience": 5
+    },
+    {
+      "name": "React",
+      "yearsOfExperience": 4
+    },
+    {
+      "name": "JSON Schema",
+      "yearsOfExperience": 3
+    }
+  ]
+}`,
+    diagram: `graph TB
+    LER[LER-RS Resume]
+    Person[Person]
+    Narrative[Narrative]
+    Emp[Employment History]
+    Edu[Education]
+    Skill[Skill]
+    Cert[Certification]
+
+    LER -->|describes| Person
+    LER -->|contains| Narrative
+    LER -->|contains| Emp
+    LER -->|contains| Edu
+    LER -->|contains| Skill
+    LER -->|contains| Cert
+
+    style LER fill:#3b82f6,stroke:#1e40af,color:#fff
+    style Person fill:#10b981,stroke:#059669,color:#fff
+    style Narrative fill:#f59e0b,stroke:#d97706,color:#fff
+    style Emp fill:#8b5cf6,stroke:#6d28d9,color:#fff`,
+    terms: [
+      {
+        name: 'LER-RS',
+        description: 'Learning and Employment Record Resume Standard - a machine-readable format for resumes.',
+        type: 'Standard'
+      },
+      {
+        name: 'Narrative',
+        description: 'Free-form text elements like professional summaries or objectives.',
+        type: 'Component'
+      },
+      {
+        name: 'Employment History',
+        description: 'Record of past and current work experiences.',
+        type: 'Component'
+      },
+      {
+        name: 'Skill',
+        description: 'Quantifiable and measurable proficiencies and abilities.',
+        type: 'Component'
+      }
+    ]
   }
 ];

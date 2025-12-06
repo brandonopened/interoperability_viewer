@@ -1,0 +1,20 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "NameValueType",
+ "description": "Classic Name-Value. Cane beused as a keyword where only the name is present.",
+ "type": "object",
+ "properties": {
+  "name": {
+   "description": "The name.",
+   "type": "string"
+  },
+  "value": {
+   "description": "The value.",
+   "type": "string"
+  }
+ },
+ "required": [
+  "name"
+ ]
+}

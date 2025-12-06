@@ -1,0 +1,23 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "RefSchemeType",
+ "description": "A Reference and Scheme",
+ "type": "object",
+ "properties": {
+  "reference": {
+   "description": "A URI (uniform resource identifier).",
+   "type": "string",
+   "format": "uri"
+  },
+  "scheme": {
+   "description": "A URI (uniform resource identifier) of the reference scheme.",
+   "type": "string",
+   "format": "uri"
+  }
+ },
+ "required": [
+  "reference"
+ ],
+ "additionalProperties": false
+}

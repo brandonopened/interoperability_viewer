@@ -1,0 +1,36 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "VerificationType",
+ "description": "A Verification.",
+ "type": "object",
+ "properties": {
+  "Verification": {
+   "oneOf": [
+    {
+     "$ref": "#/definitions/org"
+    },
+    {
+     "$ref": "#/definitions/ref"
+    },
+    {
+     "$ref": "#/definitions/other"
+    }
+   ]
+  }
+ },
+ "definitions": {
+  "org": {
+   "description": "A verification with information from a verifying organization. Note that this is not a Verifiable Credential (VC).",
+   "$ref": "VerifyingOrganizationType.json#"
+  },
+  "ref": {
+   "description": "A external reference to a verification. Note that this may or may not be a reference to a Verifiable Credential (VC).",
+   "$ref": "RefSchemeType.json#"
+  },
+  "other": {
+   "description": "A Verifiable Credential (VC) of any type.",
+   "$ref": "OtherVerifiableCredentialType.json#"
+  }
+ }
+}

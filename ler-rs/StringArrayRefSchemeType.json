@@ -1,0 +1,27 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "StringArrayRefSchemeType",
+ "description": " ",
+ "type": "object",
+ "properties": {
+  "name": {
+   "description": " ",
+   "type": "string"
+  },
+  "lines": {
+   "description": " ",
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "refScheme": {
+   "description": "reference and scheme.",
+   "$ref": "RefSchemeType.json#"
+  }
+ },
+ "required": [
+  "lines"
+ ]
+}

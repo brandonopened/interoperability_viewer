@@ -3,7 +3,7 @@ export interface Specification {
   name: string;
   fullName: string;
   version: string;
-  organization: '1EdTech' | 'Credential Engine' | 'IEEE' | 'HR Open';
+  organization: '1EdTech' | 'Credential Engine' | 'IEEE' | 'HR Open' | 'CEDS';
   description: string;
   specUrl: string;
   schema: SchemaDefinition;

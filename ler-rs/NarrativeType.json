@@ -1,0 +1,35 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "NarrativeType",
+ "description": "A named set of texts, which may have a reference to the definition of the narrative and keywords.",
+ "type": "object",
+ "properties": {
+  "name": {
+   "description": "The name for the narrative.",
+   "type": "string"
+  },
+  "definitionReference": {
+   "description": "Reference (and scheme) to more information on the narrative.",
+   "$ref": "RefSchemeType.json#"
+  },
+  "keywords": {
+   "description": "Keywords about the narrative.",
+   "type": "array",
+   "items": {
+    "$ref": "NameValueType.json#"
+   }
+  },
+  "texts": {
+   "description": "Named text of the narrative.",
+   "type": "array",
+   "items": {
+    "$ref": "StringArrayRefSchemeType.json#"
+   }
+  }
+ },
+ "required": [
+  "name",
+  "texts"
+ ]
+}

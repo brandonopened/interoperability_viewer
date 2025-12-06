@@ -1,0 +1,64 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "SkillType",
+ "description": "A Skill.",
+ "type": "object",
+ "properties": {
+  "name": {
+   "description": "Name of the skill.",
+   "type": "string"
+  },
+  "yearsOfExperience": {
+   "description": "The number of years of experience using the skill.",
+   "type": "integer"
+  },
+  "description": {
+   "description": "Simple description of the skill.",
+   "type": "string"
+  },
+  "definitionReference": {
+   "description": "Reference (and scheme) to more formal information about the skill than a simple description.",
+   "$ref": "RefSchemeType.json#"
+  },
+  "schemeReference": {
+   "description": "Reference and scheme of the skill.",
+   "$ref": "RefSchemeType.json#"
+  },
+  "endorsers": {
+   "description": "Endorsers of the skill. ",
+   "type": "array",
+   "items": {
+    "$ref": "EndorserType.json#"
+   }
+  },
+  "keywords": {
+   "description": "Keywords",
+   "type": "array",
+   "items": {
+    "$ref": "NameValueType.json#"
+   }
+  },
+  "lastUsedDate": {
+   "$ref": "../../../common/json/base/FormattedDateTimeType.json#"
+  },
+  "interestLevel": {
+   "description": "A rating of a person's interest. The interest level is expressed as a score, a point scale, or a mark among range of values.",
+   "$ref": "../../../common/json/evaluation/BaseScoreType.json#"
+  },
+  "comments": {
+   "description": "Comments",
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "verifications": {
+   "description": "Verifications of the skill.",
+   "type": "array",
+   "items": {
+    "$ref": "VerificationType.json#"
+   }
+  }
+ }
+}

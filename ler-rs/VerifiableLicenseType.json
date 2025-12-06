@@ -1,0 +1,61 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "VerifiableLicenseType",
+ "description": "Verifiable License",
+ "type": "object",
+ "properties": {
+  "verifications": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "$ref": "#/definitions/VerificationsType"
+   }
+  }
+ },
+ "required": [
+  "verifications"
+ ],
+ "additionalProperties": false,
+ "definitions": {
+  "org": {
+   "description": "A verifiable License with information from a verifying organization. Note that this is not a Verifiable Credential (VC).",
+   "$ref": "VerifyingOrganizationType.json#"
+  },
+  "ref": {
+   "description": "A external reference to a verification of the License. Note that this may or may not be a reference to a Verifiable Credential (VC).",
+   "$ref": "RefSchemeType.json#"
+  },
+  "prov": {
+   "description": "A Verifiable Credential (VC) of the type HR Open License.",
+   "$ref": "ProvisionalVerifiableCredentialLicenseType.json#"
+  },
+  "1edtob3": {
+   "description": "A Verifiable Credential (VC) of the type Open Badge v3, as defined by 1EdTech ( https://www.imsglobal.org/activity/openbadges ).",
+   "$ref": "1EdTech/ob_v3p0_achievementcredential_schema_draft4.json#"
+  },
+  "other": {
+   "description": "A Verifiable Credential (VC) of any type.",
+   "$ref": "OtherVerifiableCredentialType.json#"
+  },
+  "VerificationsType": {
+   "oneOf": [
+    {
+     "$ref": "#/definitions/org"
+    },
+    {
+     "$ref": "#/definitions/ref"
+    },
+    {
+     "$ref": "#/definitions/prov"
+    },
+    {
+     "$ref": "#/definitions/1edtob3"
+    },
+    {
+     "$ref": "#/definitions/other"
+    }
+   ]
+  }
+ }
+}

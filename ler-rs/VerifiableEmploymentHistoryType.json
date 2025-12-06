@@ -1,0 +1,54 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "VerifiableEmploymentHistoriesType",
+ "description": "Verifiable Employment Histories",
+ "type": "object",
+ "properties": {
+  "verifications": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "$ref": "#/definitions/VerificationsType"
+   }
+  }
+ },
+ "required": [
+  "verifications"
+ ],
+ "additionalProperties": false,
+ "definitions": {
+  "org": {
+   "description": "A verifiable employment history with information from a verifying organization. Note that this is not a Verifiable Credential (VC).",
+   "$ref": "VerifyingOrganizationType.json#"
+  },
+  "ref": {
+   "description": "A external reference to a verification of the employment history. Note that this may or may not be a reference to a Verifiable Credential (VC).",
+   "$ref": "RefSchemeType.json#"
+  },
+  "prov": {
+   "description": "A Verifiable Credential (VC) of the type HR Open EmploymentHitory.",
+   "$ref": "ProvisionalVerifiableCredentialEmploymentHistoryType.json#"
+  },
+  "other": {
+   "description": "A Verifiable Credential (VC) of any type.",
+   "$ref": "OtherVerifiableCredentialType.json#"
+  },
+  "VerificationsType": {
+   "oneOf": [
+    {
+     "$ref": "#/definitions/org"
+    },
+    {
+     "$ref": "#/definitions/ref"
+    },
+    {
+     "$ref": "#/definitions/prov"
+    },
+    {
+     "$ref": "#/definitions/other"
+    }
+   ]
+  }
+ }
+}

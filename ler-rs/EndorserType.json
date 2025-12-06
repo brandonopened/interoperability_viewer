@@ -1,0 +1,37 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "version": "4.4",
+ "title": "EndorserType",
+ "description": "An Endorser, which can be an individual and/or an organization, as defined in https://github.com/WebOfTrustInfo/rwot11-the-hague/blob/master/advance-readings/endorsements.md",
+ "type": "object",
+ "properties": {
+  "person": {
+   "description": "The person who is making an endorsement.",
+   "$ref": "ResumePersonBaseType.json#"
+  },
+  "organization": {
+   "description": "The organization that is making an endorsement.",
+   "$ref": "../../../common/json/organization/OrganizationType.json#"
+  },
+  "comments": {
+   "description": "Comments related to the endorsement being made by the endorser.",
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ },
+ "additionalProperties": false,
+ "oneOf": [
+  {
+   "required": [
+    "person"
+   ]
+  },
+  {
+   "required": [
+    "organization"
+   ]
+  }
+ ]
+}
