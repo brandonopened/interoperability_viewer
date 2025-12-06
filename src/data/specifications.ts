@@ -469,9 +469,34 @@ export const specifications: Specification[] = [
         relationships: ['CFDocument', 'CFItems', 'CFAssociations']
       },
       {
-        name: 'Association Types',
-        description: 'Defines relationship types: isChildOf (hierarchy), precedes (sequence), exactMatchOf (equivalence), isRelatedTo (general connection)',
-        type: 'Enumeration'
+        name: 'isChildOf',
+        description: 'Hierarchical relationship where the origin is a child of the destination, establishing parent-child structures in competency frameworks',
+        type: 'AssociationType'
+      },
+      {
+        name: 'isPartOf',
+        description: 'Part-whole relationship where the origin is a component part of the destination, used for grouping related standards',
+        type: 'AssociationType'
+      },
+      {
+        name: 'exactMatchOf',
+        description: 'Equivalence relationship indicating the origin and destination represent identical concepts, enabling crosswalks between frameworks',
+        type: 'AssociationType'
+      },
+      {
+        name: 'isRelatedTo',
+        description: 'General semantic relationship indicating relevant connection between standards without specifying the exact nature',
+        type: 'AssociationType'
+      },
+      {
+        name: 'precedes',
+        description: 'Sequential relationship where the origin comes before the destination in learning progression or curricular order',
+        type: 'AssociationType'
+      },
+      {
+        name: 'replacedBy',
+        description: 'Versioning relationship indicating the origin has been superseded by the destination in framework updates',
+        type: 'AssociationType'
       },
       {
         name: 'Human Coding Scheme',
@@ -767,8 +792,38 @@ export const specifications: Specification[] = [
         type: 'Feature'
       },
       {
+        name: 'isChildOf',
+        description: 'Hierarchical relationship where the origin is a child of the destination, establishing parent-child structures in competency frameworks',
+        type: 'AssociationType'
+      },
+      {
+        name: 'isPartOf',
+        description: 'Part-whole relationship where the origin is a component part of the destination, used for grouping related standards',
+        type: 'AssociationType'
+      },
+      {
+        name: 'exactMatchOf',
+        description: 'Equivalence relationship indicating the origin and destination represent identical concepts, enabling crosswalks between frameworks',
+        type: 'AssociationType'
+      },
+      {
+        name: 'isRelatedTo',
+        description: 'General semantic relationship indicating relevant connection between standards without specifying the exact nature',
+        type: 'AssociationType'
+      },
+      {
+        name: 'precedes',
+        description: 'Sequential relationship where the origin comes before the destination in learning progression or curricular order',
+        type: 'AssociationType'
+      },
+      {
+        name: 'replacedBy',
+        description: 'Versioning relationship indicating the origin has been superseded by the destination in framework updates',
+        type: 'AssociationType'
+      },
+      {
         name: 'isTranslationOf',
-        description: 'New association type linking translated versions of competencies and standards',
+        description: 'Translation relationship linking equivalent competencies in different languages, supporting multilingual frameworks (new in 1.1)',
         type: 'AssociationType'
       },
       {
