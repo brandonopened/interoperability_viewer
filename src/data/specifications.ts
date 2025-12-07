@@ -1520,7 +1520,7 @@ export const specifications: Specification[] = [
     id: 'skills-api-1.0',
     name: 'Skills API 1.0',
     fullName: 'HR Open Skills API Standard',
-    version: '1.0',
+    version: '0.1 DRAFT',
     organization: 'HR Open',
     description: 'An API-based system-to-system data standard for exchanging skill proficiency data between learning and assessment platforms, talent systems, and workforce management modules. Supports skill gain tracking, proficiency levels, assessment scores, and learning recommendations using dereferenceable skill identifiers.',
     specUrl: 'https://www.hropenstandards.org/news/skills-data-workgroup',
