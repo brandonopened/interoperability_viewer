@@ -2,7 +2,7 @@
 
 An interactive web application for exploring and comparing educational and credentialing data standards including specifications from 1EdTech, Credential Engine, HR Open, and CEDS.
 
-Collaborative effort by Brandon Dorman, Kevin Feyen and others! please reach out to brandon.dorman@gmail.com with questions or inaccuracies; I usually tried to upload the exact specification document and have manually checked it and examples are often directly from the interoperability specification's repo's. 
+Collaborative effort by Brandon Dorman, Kevin Feyen and others! please reach out to brandon.dorman@gmail.com with questions or inaccuracies; I usually tried to upload the exact specification document and have manually checked it and examples are often directly from the interoperability specification's repo's. For specs like CASE/CTDL I don't show an exhaustive list of association types but for CASE 1.1 for example showed the new translation type because it's novel. 
 
 ## Features
 
