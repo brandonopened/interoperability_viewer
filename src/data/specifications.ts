@@ -1856,262 +1856,388 @@ export const specifications: Specification[] = [
         },
         components: {
           schemas: {
+            BaseCEDSResource: {
+              type: 'object',
+              description: 'Common base for all CEDS entities including record-level metadata for P-20W interoperability',
+              properties: {
+                id: {
+                  type: 'string',
+                  format: 'uuid',
+                  description: 'Global unique identifier for this record instance'
+                },
+                recordCreatedDateTime: {
+                  type: 'string',
+                  format: 'date-time',
+                  description: 'Date and time this record instance was first created'
+                },
+                recordLastModifiedDateTime: {
+                  type: 'string',
+                  format: 'date-time',
+                  description: 'Date and time this record instance was last modified'
+                },
+                recordStatus: {
+                  type: 'string',
+                  description: 'Lifecycle status of this record instance',
+                  enum: ['Active', 'Inactive', 'Deleted', 'Superseded']
+                },
+                createdByOrganizationId: {
+                  type: 'string',
+                  format: 'uuid',
+                  description: 'Organization that created or owns this record instance'
+                }
+              }
+            },
             Person: {
               type: 'object',
               description: 'Base entity representing individuals across the education continuum',
-              properties: {
-                personId: {
-                  type: 'string',
-                  format: 'uuid',
-                  description: 'Unique identifier for the person'
-                },
-                firstName: { type: 'string' },
-                middleName: { type: 'string' },
-                lastName: { type: 'string' },
-                birthDate: { type: 'string', format: 'date' },
-                sexAtBirth: {
-                  type: 'string',
-                  enum: ['Male', 'Female', 'NotSelected']
-                },
-                hispanicLatinoEthnicity: { type: 'boolean' },
-                races: {
-                  type: 'array',
-                  items: {
-                    type: 'string',
-                    enum: ['AmericanIndianOrAlaskaNative', 'Asian', 'BlackOrAfricanAmerican', 'NativeHawaiianOrOtherPacificIslander', 'White']
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    personId: {
+                      type: 'string',
+                      format: 'uuid',
+                      description: 'Unique identifier for the person'
+                    },
+                    firstName: { type: 'string' },
+                    middleName: { type: 'string' },
+                    lastName: { type: 'string' },
+                    birthDate: { type: 'string', format: 'date' },
+                    sexAtBirth: {
+                      type: 'string',
+                      enum: ['Male', 'Female', 'NotSelected']
+                    },
+                    hispanicLatinoEthnicity: { type: 'boolean' },
+                    races: {
+                      type: 'array',
+                      items: {
+                        type: 'string',
+                        enum: [
+                          'AmericanIndianOrAlaskaNative',
+                          'Asian',
+                          'BlackOrAfricanAmerican',
+                          'NativeHawaiianOrOtherPacificIslander',
+                          'White'
+                        ]
+                      }
+                    }
                   }
                 }
-              }
+              ],
+              'x-subTypes': ['K12Student', 'PostsecondaryStudent', 'EarlyLearningChild']
             },
             K12Student: {
               type: 'object',
               description: 'Student in elementary or secondary education (K-12)',
-              properties: {
-                personId: { type: 'string', format: 'uuid' },
-                stateStudentIdentifier: { type: 'string' },
-                localStudentIdentifier: { type: 'string' },
-                gradeLevel: {
-                  type: 'string',
-                  enum: ['KG', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-                },
-                enrollmentStatus: {
-                  type: 'string',
-                  enum: ['Enrolled', 'NotEnrolled', 'Withdrawn']
-                },
-                entryDate: { type: 'string', format: 'date' },
-                exitDate: { type: 'string', format: 'date' },
-                specialEducationServicesStatus: { type: 'boolean' },
-                englishLearnerStatus: { type: 'boolean' },
-                economicDisadvantageStatus: { type: 'boolean' }
-              }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    personId: { type: 'string', format: 'uuid' },
+                    stateStudentIdentifier: { type: 'string' },
+                    localStudentIdentifier: { type: 'string' },
+                    gradeLevel: {
+                      type: 'string',
+                      enum: ['KG', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+                    },
+                    enrollmentStatus: {
+                      type: 'string',
+                      enum: ['Enrolled', 'NotEnrolled', 'Withdrawn']
+                    },
+                    entryDate: { type: 'string', format: 'date' },
+                    exitDate: { type: 'string', format: 'date' },
+                    specialEducationServicesStatus: { type: 'boolean' },
+                    englishLearnerStatus: { type: 'boolean' },
+                    economicDisadvantageStatus: { type: 'boolean' }
+                  }
+                }
+              ],
+              'x-parent': 'Person'
             },
             PostsecondaryStudent: {
               type: 'object',
               description: 'Student in postsecondary education',
-              properties: {
-                personId: { type: 'string', format: 'uuid' },
-                studentIdentifier: { type: 'string' },
-                admissionDate: { type: 'string', format: 'date' },
-                enrollmentStatus: {
-                  type: 'string',
-                  enum: ['FirstTime', 'Reentry', 'Continuing', 'Transfer']
-                },
-                attendanceLevel: {
-                  type: 'string',
-                  enum: ['FullTime', 'PartTime', 'LessThanPartTime']
-                },
-                creditHoursAttempted: { type: 'number' },
-                creditHoursEarned: { type: 'number' },
-                gradePointAverage: { type: 'number', minimum: 0, maximum: 4 },
-                expectedGraduationDate: { type: 'string', format: 'date' }
-              }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    personId: { type: 'string', format: 'uuid' },
+                    studentIdentifier: { type: 'string' },
+                    admissionDate: { type: 'string', format: 'date' },
+                    enrollmentStatus: {
+                      type: 'string',
+                      enum: ['FirstTime', 'Reentry', 'Continuing', 'Transfer']
+                    },
+                    attendanceLevel: {
+                      type: 'string',
+                      enum: ['FullTime', 'PartTime', 'LessThanPartTime']
+                    },
+                    creditHoursAttempted: { type: 'number' },
+                    creditHoursEarned: { type: 'number' },
+                    gradePointAverage: { type: 'number', minimum: 0, maximum: 4 },
+                    expectedGraduationDate: { type: 'string', format: 'date' }
+                  }
+                }
+              ],
+              'x-parent': 'Person'
             },
             EarlyLearningChild: {
               type: 'object',
               description: 'Child in early learning programs',
-              properties: {
-                personId: { type: 'string', format: 'uuid' },
-                programEntryDate: { type: 'string', format: 'date' },
-                programExitDate: { type: 'string', format: 'date' },
-                ageAtEntry: { type: 'number', description: 'Age in months' },
-                programType: {
-                  type: 'string',
-                  enum: ['HeadStart', 'PreK', 'Childcare', 'HomeVisitation']
-                },
-                specialNeedsStatus: { type: 'boolean' }
-              }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    personId: { type: 'string', format: 'uuid' },
+                    programEntryDate: { type: 'string', format: 'date' },
+                    programExitDate: { type: 'string', format: 'date' },
+                    ageAtEntry: { type: 'number', description: 'Age in months' },
+                    programType: {
+                      type: 'string',
+                      enum: ['HeadStart', 'PreK', 'Childcare', 'HomeVisitation']
+                    },
+                    specialNeedsStatus: { type: 'boolean' }
+                  }
+                }
+              ],
+              'x-parent': 'Person'
             },
             Organization: {
               type: 'object',
               description: 'Educational institution or organization',
-              properties: {
-                organizationId: { type: 'string', format: 'uuid' },
-                name: { type: 'string', description: 'Official name of the organization' },
-                organizationType: {
-                  type: 'string',
-                  enum: ['K12School', 'LEA', 'SEA', 'PostsecondaryInstitution', 'EarlyLearningProgram', 'EmployerOrganization']
-                },
-                identifiers: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      identifierType: {
-                        type: 'string',
-                        enum: ['NCES', 'OPEID', 'DUNS', 'EIN', 'State']
-                      },
-                      identifier: { type: 'string' }
-                    }
-                  }
-                },
-                address: {
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
                   type: 'object',
                   properties: {
-                    streetAddress: { type: 'string' },
-                    city: { type: 'string' },
-                    stateAbbreviation: { type: 'string', pattern: '^[A-Z]{2}$' },
-                    postalCode: { type: 'string' },
-                    county: { type: 'string' }
+                    organizationId: { type: 'string', format: 'uuid' },
+                    name: { type: 'string', description: 'Official name of the organization' },
+                    organizationType: {
+                      type: 'string',
+                      enum: ['K12School', 'LEA', 'SEA', 'PostsecondaryInstitution', 'EarlyLearningProgram', 'EmployerOrganization']
+                    },
+                    identifiers: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          identifierType: {
+                            type: 'string',
+                            enum: ['NCES', 'OPEID', 'DUNS', 'EIN', 'State']
+                          },
+                          identifier: { type: 'string' }
+                        }
+                      }
+                    },
+                    address: {
+                      type: 'object',
+                      properties: {
+                        streetAddress: { type: 'string' },
+                        city: { type: 'string' },
+                        stateAbbreviation: { type: 'string', pattern: '^[A-Z]{2}$' },
+                        postalCode: { type: 'string' },
+                        county: { type: 'string' }
+                      }
+                    }
                   }
                 }
-              }
+              ]
             },
             Course: {
               type: 'object',
               description: 'Educational course or learning program',
-              properties: {
-                courseId: { type: 'string', format: 'uuid' },
-                courseCode: { type: 'string' },
-                courseName: { type: 'string' },
-                courseDescription: { type: 'string' },
-                creditValue: { type: 'number' },
-                subjectArea: {
-                  type: 'string',
-                  enum: ['English', 'Mathematics', 'Science', 'SocialStudies', 'Arts', 'PhysicalEducation', 'CTE', 'Other']
-                },
-                courseLevelType: {
-                  type: 'string',
-                  enum: ['Basic', 'General', 'Honors', 'AP', 'IB', 'DualCredit']
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    courseId: { type: 'string', format: 'uuid' },
+                    courseCode: { type: 'string' },
+                    courseName: { type: 'string' },
+                    courseDescription: { type: 'string' },
+                    creditValue: { type: 'number' },
+                    subjectArea: {
+                      type: 'string',
+                      enum: ['English', 'Mathematics', 'Science', 'SocialStudies', 'Arts', 'PhysicalEducation', 'CTE', 'Other']
+                    },
+                    courseLevelType: {
+                      type: 'string',
+                      enum: ['Basic', 'General', 'Honors', 'AP', 'IB', 'DualCredit']
+                    }
+                  }
                 }
-              }
+              ]
             },
             Assessment: {
               type: 'object',
               description: 'Educational assessment or examination',
-              properties: {
-                assessmentId: { type: 'string', format: 'uuid' },
-                assessmentIdentifier: { type: 'string' },
-                assessmentTitle: { type: 'string' },
-                assessmentType: {
-                  type: 'string',
-                  enum: ['Achievement', 'Aptitude', 'AttainmentAssessment', 'Formative', 'Summative', 'Interim', 'Diagnostic']
-                },
-                academicSubject: { type: 'string' },
-                gradeLevel: { type: 'string' },
-                assessmentPurpose: {
-                  type: 'string',
-                  enum: ['Accountability', 'AdmissionsAndPlacement', 'Diagnostic', 'ProgressMonitoring']
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    assessmentId: { type: 'string', format: 'uuid' },
+                    assessmentIdentifier: { type: 'string' },
+                    assessmentTitle: { type: 'string' },
+                    assessmentType: {
+                      type: 'string',
+                      enum: ['Achievement', 'Aptitude', 'AttainmentAssessment', 'Formative', 'Summative', 'Interim', 'Diagnostic']
+                    },
+                    academicSubject: { type: 'string' },
+                    gradeLevel: { type: 'string' },
+                    assessmentPurpose: {
+                      type: 'string',
+                      enum: ['Accountability', 'AdmissionsAndPlacement', 'Diagnostic', 'ProgressMonitoring']
+                    }
+                  }
                 }
-              }
+              ]
             },
             AssessmentResult: {
               type: 'object',
               description: 'Individual assessment results',
-              properties: {
-                personId: { type: 'string', format: 'uuid' },
-                assessmentId: { type: 'string', format: 'uuid' },
-                assessmentAdministrationDate: { type: 'string', format: 'date' },
-                scoreValue: { type: 'string' },
-                scoreMetricType: {
-                  type: 'string',
-                  enum: ['ScaleScore', 'PercentileScore', 'RawScore', 'PerformanceLevel']
-                },
-                performanceLevel: { type: 'string', description: 'e.g., Proficient, Advanced, Basic' }
-              }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    personId: { type: 'string', format: 'uuid' },
+                    assessmentId: { type: 'string', format: 'uuid' },
+                    assessmentAdministrationDate: { type: 'string', format: 'date' },
+                    scoreValue: { type: 'string' },
+                    scoreMetricType: {
+                      type: 'string',
+                      enum: ['ScaleScore', 'PercentileScore', 'RawScore', 'PerformanceLevel']
+                    },
+                    performanceLevel: { type: 'string', description: 'e.g., Proficient, Advanced, Basic' }
+                  }
+                }
+              ]
             },
             Credential: {
               type: 'object',
               description: 'Educational credential, certificate, or degree',
-              properties: {
-                credentialId: { type: 'string', format: 'uuid' },
-                credentialName: { type: 'string' },
-                credentialType: {
-                  type: 'string',
-                  enum: ['Diploma', 'Certificate', 'Degree', 'License', 'Badge', 'Certification']
-                },
-                credentialLevel: {
-                  type: 'string',
-                  enum: ['HighSchool', 'AssociateDegree', 'BachelorsDegree', 'MastersDegree', 'DoctoralDegree', 'ProfessionalCertificate']
-                },
-                issuerOrganizationId: { type: 'string', format: 'uuid' },
-                awardDate: { type: 'string', format: 'date' },
-                expirationDate: { type: 'string', format: 'date' }
-              }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    credentialId: { type: 'string', format: 'uuid' },
+                    credentialName: { type: 'string' },
+                    credentialType: {
+                      type: 'string',
+                      enum: ['Diploma', 'Certificate', 'Degree', 'License', 'Badge', 'Certification']
+                    },
+                    credentialLevel: {
+                      type: 'string',
+                      enum: [
+                        'HighSchool',
+                        'AssociateDegree',
+                        'BachelorsDegree',
+                        'MastersDegree',
+                        'DoctoralDegree',
+                        'ProfessionalCertificate'
+                      ]
+                    },
+                    issuerOrganizationId: { type: 'string', format: 'uuid' },
+                    awardDate: { type: 'string', format: 'date' },
+                    expirationDate: { type: 'string', format: 'date' }
+                  }
+                }
+              ]
             },
             CompetencyFramework: {
               type: 'object',
               description: 'Framework defining competencies and learning standards',
-              properties: {
-                frameworkId: { type: 'string', format: 'uuid' },
-                frameworkName: { type: 'string' },
-                frameworkDescription: { type: 'string' },
-                publisher: { type: 'string' },
-                version: { type: 'string' },
-                subjectArea: { type: 'string' },
-                educationLevel: {
-                  type: 'array',
-                  items: { type: 'string' }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    frameworkId: { type: 'string', format: 'uuid' },
+                    frameworkName: { type: 'string' },
+                    frameworkDescription: { type: 'string' },
+                    publisher: { type: 'string' },
+                    version: { type: 'string' },
+                    subjectArea: { type: 'string' },
+                    educationLevel: {
+                      type: 'array',
+                      items: { type: 'string' }
+                    }
+                  }
                 }
-              }
+              ]
             },
             LearningResource: {
               type: 'object',
               description: 'Educational materials and resources',
-              properties: {
-                learningResourceId: { type: 'string', format: 'uuid' },
-                title: { type: 'string' },
-                description: { type: 'string' },
-                resourceType: {
-                  type: 'string',
-                  enum: ['Textbook', 'Video', 'Audio', 'InteractiveMedia', 'Assessment', 'Lesson', 'Unit']
-                },
-                learningResourceFormat: {
-                  type: 'string',
-                  enum: ['Digital', 'Physical', 'Hybrid']
-                },
-                url: { type: 'string', format: 'uri' },
-                publisherName: { type: 'string' }
-              }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    learningResourceId: { type: 'string', format: 'uuid' },
+                    title: { type: 'string' },
+                    description: { type: 'string' },
+                    resourceType: {
+                      type: 'string',
+                      enum: ['Textbook', 'Video', 'Audio', 'InteractiveMedia', 'Assessment', 'Lesson', 'Unit']
+                    },
+                    learningResourceFormat: {
+                      type: 'string',
+                      enum: ['Digital', 'Physical', 'Hybrid']
+                    },
+                    url: { type: 'string', format: 'uri' },
+                    publisherName: { type: 'string' }
+                  }
+                }
+              ]
             },
             Enrollment: {
               type: 'object',
               description: 'Relationship between person and organization',
-              properties: {
-                enrollmentId: { type: 'string', format: 'uuid' },
-                personId: { type: 'string', format: 'uuid' },
-                organizationId: { type: 'string', format: 'uuid' },
-                entryDate: { type: 'string', format: 'date' },
-                exitDate: { type: 'string', format: 'date' },
-                entryType: { type: 'string' },
-                exitType: { type: 'string' }
-              }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    enrollmentId: { type: 'string', format: 'uuid' },
+                    personId: { type: 'string', format: 'uuid' },
+                    organizationId: { type: 'string', format: 'uuid' },
+                    entryDate: { type: 'string', format: 'date' },
+                    exitDate: { type: 'string', format: 'date' },
+                    entryType: { type: 'string' },
+                    exitType: { type: 'string' }
+                  }
+                }
+              ]
             },
             StaffEmployment: {
               type: 'object',
               description: 'Staff employment relationship with educational organization',
-              properties: {
-                personId: { type: 'string', format: 'uuid' },
-                organizationId: { type: 'string', format: 'uuid' },
-                positionTitle: { type: 'string' },
-                employmentStatus: {
-                  type: 'string',
-                  enum: ['Active', 'Inactive', 'Leave']
-                },
-                hireDate: { type: 'string', format: 'date' },
-                terminationDate: { type: 'string', format: 'date' },
-                classificationOfInstructionalProgram: { type: 'string' },
-                fullTimeEquivalency: { type: 'number', minimum: 0, maximum: 1 }
-              }
+              allOf: [
+                { $ref: '#/components/schemas/BaseCEDSResource' },
+                {
+                  type: 'object',
+                  properties: {
+                    personId: { type: 'string', format: 'uuid' },
+                    organizationId: { type: 'string', format: 'uuid' },
+                    positionTitle: { type: 'string' },
+                    employmentStatus: {
+                      type: 'string',
+                      enum: ['Active', 'Inactive', 'Leave']
+                    },
+                    hireDate: { type: 'string', format: 'date' },
+                    terminationDate: { type: 'string', format: 'date' },
+                    classificationOfInstructionalProgram: { type: 'string' },
+                    fullTimeEquivalency: { type: 'number', minimum: 0, maximum: 1 }
+                  }
+                }
+              ]
             }
           }
         }
@@ -2178,6 +2304,7 @@ export const specifications: Specification[] = [
   }
 }`,
     diagram: `graph TB
+    Base[Base CEDS Resource]
     Person[Person]
     ELChild[Early Learning Child]
     K12Student[K-12 Student]
@@ -2199,6 +2326,17 @@ export const specifications: Specification[] = [
 
     Enrollment[Enrollment]
     Employment[Staff Employment]
+
+    Base --> Person
+    Base --> Organization
+    Base --> Course
+    Base --> Assessment
+    Base --> AssessmentResult
+    Base --> Credential
+    Base --> CompFramework
+    Base --> LearningRes
+    Base --> Enrollment
+    Base --> Employment
 
     Person -->|child type| ELChild
     Person -->|student type| K12Student
@@ -2230,6 +2368,7 @@ export const specifications: Specification[] = [
     Course -->|uses| LearningRes
     Assessment -->|aligned to| CompFramework
 
+    style Base fill:#111827,stroke:#111827,color:#fff
     style Person fill:#3b82f6,stroke:#1e40af,color:#fff
     style Organization fill:#10b981,stroke:#059669,color:#fff
     style Assessment fill:#f59e0b,stroke:#d97706,color:#fff
@@ -2237,6 +2376,11 @@ export const specifications: Specification[] = [
     style Course fill:#ec4899,stroke:#be185d,color:#fff
     style CompFramework fill:#06b6d4,stroke:#0891b2,color:#fff`,
     terms: [
+      {
+        name: 'Base CEDS Resource',
+        description: 'Abstract base type providing record-level metadata such as identifiers, status, and timestamps for all CEDS entities',
+        type: 'BaseCEDSResource'
+      },
       {
         name: 'Person',
         description: 'Base entity representing individuals across the education continuum from early learning through workforce',
@@ -2325,6 +2469,7 @@ export const specifications: Specification[] = [
         type: 'Enumeration'
       }
     ]
+
   },
   {
     id: 'jedx-organizations-1.0',
