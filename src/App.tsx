@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileText, Code, FileJson, Network, ExternalLink, BookOpen, ArrowLeftRight } from 'lucide-react';
+import { FileText, Code, FileJson, Network, ExternalLink, BookOpen, ArrowLeftRight, Clock } from 'lucide-react';
 import { specifications } from './data/specifications';
 import { Specification, ViewMode } from './types/specification';
 import { SchemaViewer } from './components/SchemaViewer';
@@ -7,8 +7,9 @@ import { ExampleViewer } from './components/ExampleViewer';
 import { DiagramViewer } from './components/DiagramViewer';
 import { TermsList } from './components/TermsList';
 import { ComparisonView } from './components/ComparisonView';
+import { TimelineView } from './components/TimelineView';
 
-type AppView = 'viewer' | 'compare';
+type AppView = 'viewer' | 'compare' | 'timeline';
 
 function App() {
   const [selectedSpec, setSelectedSpec] = useState<Specification>(specifications[0]);
@@ -60,6 +61,16 @@ function App() {
                 <ArrowLeftRight className="w-4 h-4" />
                 Compare
               </button>
+              <button
+                onClick={() => setAppView('timeline')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${appView === 'timeline'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+              >
+                <Clock className="w-4 h-4" />
+                Timeline
+              </button>
             </div>
           </div>
         </div>
@@ -68,6 +79,8 @@ function App() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         {appView === 'compare' ? (
           <ComparisonView specifications={specifications} />
+        ) : appView === 'timeline' ? (
+          <TimelineView />
         ) : (
           <div className="grid grid-cols-12 gap-6">
             <aside className="col-span-12 lg:col-span-3">
