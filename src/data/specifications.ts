@@ -3098,5 +3098,324 @@ export const specifications: Specification[] = [
         type: 'Component'
       }
     ]
+  },
+  {
+    id: 'ed-fi-ods-api-7.3',
+    name: 'Ed-Fi ODS/API 7.3',
+    fullName: 'Ed-Fi Operational Data Store / API Suite 3 v7.3',
+    version: '7.3',
+    organization: 'Ed-Fi Alliance',
+    description: 'A RESTful API and data model for managing K-12 education data, supporting student information, assessments, attendance, discipline, and more. Supports extensions for state-specific and domain-specific data needs.',
+    specUrl: 'https://docs.ed-fi.org/reference/ods-api/',
+    schema: {
+      type: 'openapi',
+      content: {
+        openapi: '3.0.0',
+        info: {
+          title: 'Ed-Fi ODS/API Suite 3',
+          version: '7.3',
+          description: 'Ed-Fi Operational Data Store API for K-12 education data management'
+        },
+        servers: [
+          {
+            url: '/data/v3',
+            description: 'Data Management API'
+          },
+          {
+            url: '/composites/v1',
+            description: 'Composites API'
+          },
+          {
+            url: '/identity/v2',
+            description: 'Identity API'
+          }
+        ],
+        paths: {
+          '/ed-fi/students': {
+            get: {
+              summary: 'Get students',
+              description: 'Retrieve student resources from the Ed-Fi data model',
+              responses: {
+                '200': {
+                  description: 'List of students'
+                }
+              }
+            },
+            post: {
+              summary: 'Create student',
+              description: 'Create a new student resource, optionally with extensions',
+              requestBody: {
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Student'
+                    }
+                  }
+                }
+              },
+              responses: {
+                '201': {
+                  description: 'Student created'
+                }
+              }
+            }
+          },
+          '/talentMgmt/applicants': {
+            get: {
+              summary: 'Get applicants',
+              description: 'Retrieve applicant resources from Talent Management domain extension',
+              responses: {
+                '200': {
+                  description: 'List of applicants'
+                }
+              }
+            }
+          }
+        },
+        components: {
+          schemas: {
+            Student: {
+              type: 'object',
+              description: 'Extended Ed-Fi Student resource',
+              required: ['studentUniqueId', 'firstName', 'lastSurname'],
+              properties: {
+                id: {
+                  type: 'string',
+                  description: 'Unique identifier for the student'
+                },
+                studentUniqueId: {
+                  type: 'string',
+                  description: 'A unique alphanumeric code assigned to a student'
+                },
+                firstName: {
+                  type: 'string',
+                  description: 'A name given to an individual at birth, baptism, or during another naming ceremony'
+                },
+                lastSurname: {
+                  type: 'string',
+                  description: 'The name borne in common by members of a family'
+                },
+                middleName: {
+                  type: 'string',
+                  description: 'A secondary name given to an individual at birth, baptism, or during another naming ceremony'
+                },
+                birthDate: {
+                  type: 'string',
+                  format: 'date',
+                  description: 'The month, day, and year on which an individual was born'
+                },
+                _ext: {
+                  type: 'object',
+                  description: 'Extension container for state-specific or organization-specific extensions',
+                  additionalProperties: true,
+                  example: {
+                    SomeState: {
+                      tribalAffiliation: 'Pascua Yaqui'
+                    }
+                  }
+                }
+              }
+            },
+            Applicant: {
+              type: 'object',
+              description: 'Talent Management Applicant resource',
+              required: ['applicantIdentifier'],
+              properties: {
+                id: {
+                  type: 'string',
+                  description: 'Unique identifier for the applicant'
+                },
+                applicantIdentifier: {
+                  type: 'string',
+                  description: 'A unique number or alphanumeric code assigned to an applicant'
+                },
+                educationOrganizationReference: {
+                  type: 'object',
+                  properties: {
+                    educationOrganizationId: {
+                      type: 'integer',
+                      description: 'The identifier assigned to an education organization'
+                    }
+                  }
+                },
+                addresses: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      addressTypeDescriptor: {
+                        type: 'string',
+                        description: 'The type of address'
+                      },
+                      streetNumberName: {
+                        type: 'string',
+                        description: 'The street number and street name'
+                      },
+                      city: {
+                        type: 'string',
+                        description: 'The name of the city'
+                      },
+                      stateAbbreviationDescriptor: {
+                        type: 'string',
+                        description: 'The abbreviation for the state'
+                      },
+                      postalCode: {
+                        type: 'string',
+                        description: 'The five or nine digit zip code'
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    example: `{
+  "studentUniqueId": "397589871",
+  "firstName": "John",
+  "lastSurname": "Ortiz",
+  "middleName": "Michael",
+  "birthDate": "2005-08-15",
+  "personalIdentificationDocuments": [
+    {
+      "personalInformationVerificationDescriptor": "uri://ed-fi.org/PersonalInformationVerificationDescriptor#State-issued ID",
+      "identificationDocumentUseDescriptor": "uri://ed-fi.org/IdentificationDocumentUseDescriptor#Personal information verification",
+      "issuerCountryDescriptor": "uri://ed-fi.org/CountryDescriptor#US",
+      "documentTitle": "State Driver's License",
+      "documentExpirationDate": "2030-12-31"
+    }
+  ],
+  "addresses": [
+    {
+      "addressTypeDescriptor": "uri://ed-fi.org/AddressTypeDescriptor#Physical",
+      "streetNumberName": "123 Main Street",
+      "apartmentRoomSuiteNumber": "Apt 4B",
+      "city": "Springfield",
+      "stateAbbreviationDescriptor": "uri://ed-fi.org/StateAbbreviationDescriptor#IL",
+      "postalCode": "62701",
+      "countryDescriptor": "uri://ed-fi.org/CountryDescriptor#US"
+    }
+  ],
+  "telephones": [
+    {
+      "telephoneNumberTypeDescriptor": "uri://ed-fi.org/TelephoneNumberTypeDescriptor#Mobile",
+      "telephoneNumber": "555-123-4567"
+    }
+  ],
+  "electronicMails": [
+    {
+      "electronicMailTypeDescriptor": "uri://ed-fi.org/ElectronicMailTypeDescriptor#Home/Personal",
+      "electronicMailAddress": "john.ortiz@example.com"
+    }
+  ],
+  "_ext": {
+    "SomeState": {
+      "tribalAffiliation": "Pascua Yaqui",
+      "homelessPrimaryNighttimeResidence": "uri://ed-fi.org/HomelessPrimaryNighttimeResidenceDescriptor#Shelter",
+      "migrantEducationProgramServices": [
+        {
+          "migrantEducationProgramServiceDescriptor": "uri://ed-fi.org/MigrantEducationProgramServiceDescriptor#Tutoring"
+        }
+      ]
+    }
+  }
+}`,
+    diagram: `graph TB
+    API[Ed-Fi ODS/API]
+    DataAPI[Data Management API<br/>/data/v3]
+    CompositeAPI[Composites API<br/>/composites/v1]
+    IdentityAPI[Identity API<br/>/identity/v2]
+    
+    Student[Student Resource]
+    School[School Resource]
+    Assessment[Assessment Resource]
+    Applicant[Applicant Resource<br/>TalentMgmt Extension]
+    
+    Ext[Extension Container<br/>_ext field]
+    StateExt[State Extension]
+    DomainExt[Domain Extension]
+    
+    API --> DataAPI
+    API --> CompositeAPI
+    API --> IdentityAPI
+    
+    DataAPI --> Student
+    DataAPI --> School
+    DataAPI --> Assessment
+    DataAPI --> Applicant
+    
+    Student --> Ext
+    Ext --> StateExt
+    Ext --> DomainExt
+    
+    style API fill:#3b82f6,stroke:#1e40af,color:#fff
+    style DataAPI fill:#10b981,stroke:#059669,color:#fff
+    style CompositeAPI fill:#f59e0b,stroke:#d97706,color:#fff
+    style IdentityAPI fill:#8b5cf6,stroke:#6d28d9,color:#fff
+    style Ext fill:#ef4444,stroke:#dc2626,color:#fff`,
+    terms: [
+      {
+        name: 'Ed-Fi ODS/API',
+        description: 'Operational Data Store / API - A RESTful API for managing K-12 education data with support for extensions',
+        type: 'API Standard',
+        relationships: ['Student', 'School', 'Assessment', 'Extension']
+      },
+      {
+        name: 'Resource',
+        description: 'A data entity in the Ed-Fi data model, such as Student, School, or Assessment',
+        type: 'Entity',
+        relationships: ['Extension', 'Descriptor']
+      },
+      {
+        name: 'Extension',
+        description: 'Mechanism for adding state-specific or domain-specific fields to Ed-Fi resources using the _ext container',
+        type: 'Extension',
+        relationships: ['Resource', 'State Extension', 'Domain Extension']
+      },
+      {
+        name: 'State Extension',
+        description: 'Extension added by a state education agency to capture state-specific data requirements',
+        type: 'Extension Type',
+        relationships: ['Extension']
+      },
+      {
+        name: 'Domain Extension',
+        description: 'Extension added for specific domains like Talent Management (talentMgmt) or other specialized areas',
+        type: 'Extension Type',
+        relationships: ['Extension']
+      },
+      {
+        name: 'Descriptor',
+        description: 'A controlled vocabulary used to classify or categorize data, referenced by URI',
+        type: 'Vocabulary',
+        relationships: ['Resource']
+      },
+      {
+        name: 'Composite',
+        description: 'A read-only aggregated view combining multiple resources for common query patterns',
+        type: 'View',
+        relationships: ['Resource']
+      },
+      {
+        name: 'Route Pattern',
+        description: 'URL structure for accessing resources: /data/v3/{schema}/{resource} for data management, /composites/v1/{org}/{category}/{resource} for composites',
+        type: 'API Pattern',
+        relationships: ['Resource']
+      },
+      {
+        name: 'Student',
+        description: 'Core Ed-Fi resource representing a learner enrolled in an educational program',
+        type: 'Resource',
+        relationships: ['School', 'Assessment', 'Enrollment']
+      },
+      {
+        name: 'Applicant',
+        description: 'Talent Management domain extension resource representing a job applicant',
+        type: 'Resource',
+        relationships: ['Education Organization']
+      }
+    ]
   }
 ];

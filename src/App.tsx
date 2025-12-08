@@ -21,7 +21,8 @@ function App() {
     'Credential Engine': 'bg-green-100 text-green-700 border-green-200',
     'IEEE': 'bg-purple-100 text-purple-700 border-purple-200',
     'HR Open': 'bg-orange-100 text-orange-700 border-orange-200',
-    'CEDS': 'bg-cyan-100 text-cyan-700 border-cyan-200'
+    'CEDS': 'bg-cyan-100 text-cyan-700 border-cyan-200',
+    'Ed-Fi Alliance': 'bg-indigo-100 text-indigo-700 border-indigo-200'
   };
 
   return (
@@ -36,7 +37,7 @@ function App() {
                   Interoperability Specification Viewer
                 </h1>
                 <p className="text-sm text-slate-600 mt-1">
-                  Explore and compare specifications from 1EdTech, Credential Engine, HR Open, and CEDS
+                  Explore and compare specifications from 1EdTech, Credential Engine, HR Open, CEDS, and Ed-Fi Alliance
                 </p>
               </div>
             </div>
