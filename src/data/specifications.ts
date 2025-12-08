@@ -3265,6 +3265,11 @@ export const specifications: Specification[] = [
                       }
                     }
                   }
+                },
+                _ext: {
+                  type: 'object',
+                  description: 'Extension container for state-specific or organization-specific extensions',
+                  additionalProperties: true
                 }
               }
             }
