@@ -1263,7 +1263,7 @@ export const specifications: Specification[] = [
   {
     id: 'ler-rs-2.0',
     name: 'LER-RS 2.0',
-    fullName: 'Learning and Employment Record Resume Standard 2.0',
+    fullName: 'Learning and Employment Record Resume Standard 2.0 (Trusted Career Profile)',
     version: '2.0',
     organization: 'HR Open',
     description: 'An open standard combining digital credentials (Open Badges 3.0, CLR 2.0) with HR resume/CV standards to create machine-readable, verifiable records of skills, education, work experience, and competencies for recruiting and talent management.',
@@ -2845,7 +2845,7 @@ export const specifications: Specification[] = [
   {
     id: 'ler-rs',
     name: 'LER-RS',
-    fullName: 'Learning and Employment Record Resume Standard',
+    fullName: 'Learning and Employment Record Resume Standard (Trusted Career Profile)',
     version: '2.0',
     organization: 'HR Open',
     description: 'The Learning and Employment Record Resume Standard (LER-RS) is a free and open standard designed to modernize the traditional resume format, making it machine-readable and verifiable. It enables the exchange of resume data between different systems and supports digital credentials.',
