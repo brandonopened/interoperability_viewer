@@ -7,7 +7,7 @@ export const specifications: Specification[] = [
     fullName: 'Comprehensive Learner Record 2.0',
     version: '2.0',
     organization: '1EdTech',
-    description: 'A set of assertions that can be packaged as a credential representing an individual\'s achievements from multiple learning providers in machine-readable format.',
+    description: 'A set of assertions that can be packaged as a credential representing an individual\'s achievements from multiple learning providers in machine-readable format. CLR supports showing relationships (associations) between achievements, enabling the creation of pathways prospectively or retrospectively, and supports "stackability" for shorter form credentials.',
     specUrl: 'https://www.imsglobal.org/spec/clr/v2p0/',
     schema: {
       type: 'json-schema',
