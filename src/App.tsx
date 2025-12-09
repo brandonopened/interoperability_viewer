@@ -77,7 +77,45 @@ function App() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+          <h2 className="text-lg font-semibold text-blue-900 mb-3 flex items-center gap-2">
+            <BookOpen className="w-5 h-5" />
+            How to Use This Tool
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-blue-800">
+            <div>
+              <h3 className="font-semibold mb-2 flex items-center gap-1">
+                <BookOpen className="w-4 h-4" />
+                Viewer
+              </h3>
+              <p className="text-blue-700">
+                Browse individual specifications to explore their data models, schemas, and examples. Select a specification from the sidebar to view its details, terms, and relationships.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2 flex items-center gap-1">
+                <ArrowLeftRight className="w-4 h-4" />
+                Compare
+              </h3>
+              <p className="text-blue-700">
+                Select two specifications to analyze their similarities, differences, and interoperability potential. AI-powered analysis identifies structural patterns and vocabulary overlaps.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2 flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                Timeline
+              </h3>
+              <p className="text-blue-700">
+                View the evolution of interoperability standards over time. See how specifications have developed and understand their historical context.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-0 pb-8">
         {appView === 'compare' ? (
           <ComparisonView specifications={specifications} />
         ) : appView === 'timeline' ? (
