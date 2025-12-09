@@ -22,12 +22,14 @@ const PREBUILT_ELEMENTS: Record<DomainType, TimelineElement[]> = {
   'K12': [
     { id: 'k12-1', label: 'High School Transcript', domain: 'K12', description: 'Student academic records and transcripts' },
     { id: 'k12-2', label: 'Course Completion', domain: 'K12', description: 'Completed courses and credits' },
-    { id: 'k12-3', label: 'Assessment Results', domain: 'K12', description: 'Standardized test scores and assessments' }
+    { id: 'k12-3', label: 'Assessment Results', domain: 'K12', description: 'Standardized test scores and assessments' },
+    { id: 'k12-4', label: 'CLR - Comprehensive Learner Record', domain: 'K12', description: 'Complete learning history for advancement into college' }
   ],
   'Higher Ed': [
     { id: 'he-1', label: 'College Transcript', domain: 'Higher Ed', description: 'Post-secondary academic records' },
     { id: 'he-2', label: 'Degree Credential', domain: 'Higher Ed', description: 'Earned degrees and certifications' },
-    { id: 'he-3', label: 'Course Enrollment', domain: 'Higher Ed', description: 'Current and past course enrollments' }
+    { id: 'he-3', label: 'Course Enrollment', domain: 'Higher Ed', description: 'Current and past course enrollments' },
+    { id: 'he-4', label: 'CLR - Trusted Career Profile', domain: 'Higher Ed', description: 'Complete learning record for advancement into life and career (LER-RS)' }
   ],
   'Other Learning': [
     { id: 'ol-1', label: 'Professional Training', domain: 'Other Learning', description: 'Workplace and professional development' },
