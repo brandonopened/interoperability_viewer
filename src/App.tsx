@@ -108,7 +108,7 @@ function App() {
                 Timeline
               </h3>
               <p className="text-blue-700">
-                View the evolution of interoperability standards over time. See how specifications have developed and understand their historical context.
+                Throughout a persons learning journey, see where interoperability specifications can be used and for what kinds of data. (Coolest part of this whole site!)
               </p>
             </div>
           </div>
